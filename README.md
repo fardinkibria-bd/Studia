@@ -181,30 +181,6 @@ studia/
 
 ---
 
-## 🌐 Deployment
-
-Studia is designed to be deployable as a modern web application.
-
-The project can be deployed using platforms such as **Netlify**.
-
-A typical production workflow is:
-
-```text
-Development
-     ↓
-Git
-     ↓
-GitHub
-     ↓
-Production Build
-     ↓
-Netlify
-     ↓
-Live Application
-```
-
----
-
 ## 🗺️ Roadmap
 
 Studia is intended to grow beyond a simple study planner into a complete student productivity ecosystem.

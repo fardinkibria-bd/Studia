@@ -1,8 +1,12 @@
 {
-  "name": "vite-react-typescript-starter",
+  "name": "studia",
   "private": true,
   "version": "0.0.0",
+  "description": "A modern study planning and productivity platform for students.",
   "type": "module",
+  "engines": {
+    "node": ">=20.19.0"
+  },
   "scripts": {
     "dev": "vite",
     "build": "vite build",
@@ -35,7 +39,6 @@
     "typescript-eslint": "^8.3.0",
     "vite": "^7.3.6"
   },
-  "description": "",
   "main": "eslint.config.js",
   "keywords": []
 }

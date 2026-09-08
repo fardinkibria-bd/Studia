@@ -1,0 +1,21 @@
+# Netlify deployment configuration for Studia.
+# These settings are auto-detected when the repo is imported into Netlify.
+#
+#   Build command:      npm run build
+#   Publish directory:  dist
+
+[build]
+  command = "npm run build"
+  publish = "dist"
+
+# Pin the Node.js version for reproducible builds.
+# Vite 7 requires Node.js 20.19+ or 22.12+ (22 is currently LTS).
+[build.environment]
+  NODE_VERSION = "22"
+
+# SPA fallback: any path that doesn't match a static file serves index.html,
+# so direct visits and future shareable URLs always load the app.
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200

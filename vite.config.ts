@@ -4,7 +4,10 @@ import { fileURLToPath, URL } from 'node:url';
 import { generateSoundsManifest } from './scripts/generate-sounds-manifest.mjs';
 
 export default defineConfig({
-  base: '/studia/',
+  // Root base — Studia is served at the domain root on Netlify, so absolute
+  // root paths like /alarm.mp3 are correct here. (A GitHub-Pages-style
+  // sub-path deployment would instead set this to '/studia/'.)
+  base: '/',
   plugins: [
     react(),
     {
@@ -13,17 +16,6 @@ export default defineConfig({
       name: 'sounds-manifest',
       buildStart() {
         generateSoundsManifest();
-      },
-    },
-    {
-      name: 'root-favicon',
-      configureServer(server) {
-        server.middlewares.use((req, res, next) => {
-          if (req.url && (req.url === '/favicon.ico' || req.url.startsWith('/favicon.ico?'))) {
-            req.url = '/studia' + req.url;
-          }
-          next();
-        });
       },
     },
   ],
