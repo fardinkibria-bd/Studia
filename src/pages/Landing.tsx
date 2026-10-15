@@ -247,8 +247,8 @@ export default function Landing({ onEnter }: LandingProps) {
                     className="card-base p-3 sm:p-4"
                   >
                     <stat.icon className={`w-5 h-5 ${stat.color} mb-2`} />
-                    <p className="text-xs text-fg-subtle">{stat.label}</p>
-                    <p className="text-base sm:text-lg font-semibold">
+                    <p className="text-xs text-bg-surface">{stat.label}</p>
+                    <p className="text-base sm:text-lg text-info font-semibold">
                       {stat.value}
                     </p>
                   </motion.div>
