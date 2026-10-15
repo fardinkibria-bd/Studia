@@ -31,7 +31,7 @@ export function ConfirmDialog({
           <AlertTriangle className="w-5 h-5" />
         </div>
 
-        <p className="text-sm text-fg-muted leading-relaxed">
+        <p className="text-sm text-danger leading-relaxed">
           {description}
         </p>
       </div>

@@ -1,5 +1,5 @@
 import { useState, useMemo } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { AnimatePresence } from "framer-motion";
 import {
   Plus,
   Trash2,
@@ -8,12 +8,9 @@ import {
   Calendar,
   Clock,
   MapPin,
-  CheckCircle2,
-  Circle,
 } from "lucide-react";
 import { useStore, uid } from "@/store/StoreContext";
 import { useToast } from "@/store/ToastContext";
-import { useTheme } from "@/store/ThemeContext";
 import { Card } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
 import { Modal } from "@/components/ui/Modal";
@@ -22,6 +19,10 @@ import { Badge } from "@/components/ui/Badge";
 import { EmptyState } from "@/components/ui/Feedback";
 import { SubjectPill } from "@/components/ui/Subject";
 import { ConfirmDialog } from "@/components/ui/ConfirmDialog";
+import {
+  PlayfulTodolist,
+  type PlayfulTodolistItem,
+} from "@/components/animate-ui/components/community/playful-todolist";
 import {
   relativeDue,
   daysUntil,
@@ -34,7 +35,6 @@ import type { Exam } from "@/types";
 export default function Exams() {
   const { data, update } = useStore();
   const { toast } = useToast();
-  const { reducedMotion } = useTheme();
   const [modalOpen, setModalOpen] = useState(false);
   const [editing, setEditing] = useState<Exam | null>(null);
   const [deleteTarget, setDeleteTarget] = useState<Exam | null>(null);
@@ -98,10 +98,10 @@ export default function Exams() {
     <div className="p-4 lg:p-6 space-y-6 max-w-7xl mx-auto">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
         <div>
-          <h2 className="text-2xl lg:text-3xl font-bold tracking-tight">
+          <h2 className="text-2xl lg:text-3xl font-title font-bold tracking-tight">
             Exams
           </h2>
-          <p className="text-fg-muted text-sm mt-1">
+          <p className="text-bg-surface text-sm mt-1">
             Track upcoming exams and stay prepared.
           </p>
         </div>
@@ -110,120 +110,90 @@ export default function Exams() {
         </Button>
       </div>
 
-      {/* Stats */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
-        <Card>
-          <div className="p-4">
-            <p className="text-xs text-fg-subtle">Total Exams</p>
-            <p className="text-2xl font-bold mt-1">{data.exams.length}</p>
+      {/* Two-column layout: Main content LEFT, Summary rail RIGHT */}
+      <div className="flex flex-col md:flex-row items-start gap-4 lg:gap-6">
+        {/* Main Exams Container */}
+        <div className="w-full md:flex-1 min-w-0 space-y-4 lg:space-y-6">
+          {/* Filters */}
+          <div className="flex gap-2 overflow-x-auto pb-1">
+            {[
+              { id: "all", label: "All" },
+              { id: "upcoming", label: "Upcoming" },
+              { id: "past", label: "Past" },
+            ].map((f) => (
+              <button
+                key={f.id}
+                onClick={() => setFilter(f.id as "all" | "upcoming" | "past")}
+                className={`shrink-0 px-3.5 py-1.5 rounded-lg text-sm font-medium transition-colors ${filter === f.id ? "bg-brand-500 text-white" : "bg-bg-surface border border-border-default text-fg-muted hover:text-fg"}`}
+              >
+                {f.label}
+              </button>
+            ))}
           </div>
-        </Card>
-        <Card>
-          <div className="p-4">
-            <p className="text-xs text-fg-subtle">Upcoming</p>
-            <p className="text-2xl font-bold mt-1 text-info">{upcoming}</p>
-          </div>
-        </Card>
-        <Card>
-          <div className="p-4">
-            <p className="text-xs text-fg-subtle">Past</p>
-            <p className="text-2xl font-bold mt-1 text-fg-muted">{past}</p>
-          </div>
-        </Card>
-        <Card>
-          <div className="p-4">
-            <p className="text-xs text-fg-subtle">Next Exam</p>
-            <p className="text-2xl font-bold mt-1 text-danger">
-              {upcoming > 0 ? "Soon" : "—"}
-            </p>
-          </div>
-        </Card>
-      </div>
 
-      {/* Filters */}
-      <div className="flex gap-2 overflow-x-auto pb-1">
-        {[
-          { id: "all", label: "All" },
-          { id: "upcoming", label: "Upcoming" },
-          { id: "past", label: "Past" },
-        ].map((f) => (
-          <button
-            key={f.id}
-            onClick={() => setFilter(f.id as "all" | "upcoming" | "past")}
-            className={`shrink-0 px-3.5 py-1.5 rounded-lg text-sm font-medium transition-colors ${filter === f.id ? "bg-brand-500 text-white" : "bg-bg-surface border border-border-default text-fg-muted hover:text-fg"}`}
-          >
-            {f.label}
-          </button>
-        ))}
-      </div>
-
-      {/* Exam list */}
-      <Card>
-        <div className="p-5">
-          {filtered.length === 0 ? (
-            <EmptyState
-              icon={<GraduationCap className="w-7 h-7" />}
-              title="No exams yet"
-              description="Add your first exam to track important dates and stay prepared."
-              action={
-                <Button onClick={openAdd}>
-                  <Plus className="w-4 h-4" /> Add Exam
-                </Button>
-              }
-            />
-          ) : (
-            <div className="space-y-2">
-              <AnimatePresence>
-                {filtered.map((e, i) => {
-                  const subject = getSubjectById(data.subjects, e.subjectId);
-                  const days = daysUntil(e.date);
-                  const isPast = days < 0;
-                  return (
-                    <motion.div
-                      key={e.id}
-                      layout
-                      initial={reducedMotion ? false : { opacity: 0, y: 8 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, scale: 0.95 }}
-                      transition={{ delay: i * 0.03 }}
-                      className={`group flex items-start gap-3 p-4 rounded-xl bg-bg-surface border border-border-default hover:border-border-strong transition-colors ${isPast ? "opacity-60" : ""} ${e.completed ? "opacity-60" : ""}`}
-                    >
-                      <button onClick={() => toggleComplete(e.id)} className="shrink-0 mt-0.5 transition-transform active:scale-90">
-                        {e.completed ? <CheckCircle2 className="w-5 h-5 text-success" /> : <Circle className="w-5 h-5 text-fg-subtle hover:text-fg-muted" />}
-                      </button>
-                      <div
-                        className={`w-12 h-12 rounded-xl flex flex-col items-center justify-center shrink-0 ${isPast ? "bg-bg-muted" : "bg-danger/10"}`}
-                      >
-                        <span
-                          className={`text-lg font-bold leading-none ${isPast ? "text-fg-subtle" : "text-danger"}`}
-                        >
-                          {Math.abs(days)}
-                        </span>
-                        <span
-                          className={`text-[9px] uppercase ${isPast ? "text-fg-subtle" : "text-danger/70"}`}
-                        >
-                          {isPast ? "days ago" : "days"}
-                        </span>
-                      </div>
-                      <div className="flex-1 min-w-0">
-                        <p
-                          className={`text-sm font-medium ${isPast || e.completed ? "text-fg-subtle line-through" : "text-fg"}`}
-                        >
-                          {e.title}
+          {/* Exam list */}
+          <Card>
+            <div className="p-5">
+              {filtered.length === 0 ? (
+                <EmptyState
+                  icon={<GraduationCap className="w-7 h-7" />}
+                  title="No exams yet"
+                  description="Add your first exam to track important dates and stay prepared."
+                  action={
+                    <Button onClick={openAdd}>
+                      <Plus className="w-4 h-4" /> Add Exam
+                    </Button>
+                  }
+                />
+              ) : (
+                <PlayfulTodolist
+                  items={filtered.map((e): PlayfulTodolistItem => {
+                    const subject = getSubjectById(data.subjects, e.subjectId);
+                    const days = daysUntil(e.date);
+                    const isPast = days < 0;
+                    return {
+                      id: e.id,
+                      label: e.title,
+                      checked: !!e.completed,
+                      variant: "success",
+                      labelClassName:
+                        isPast || e.completed ? "text-brand-600/85" : "text-brand-600/85",
+                      description: e.notes ? (
+                        <p className="text-xs text-info line-clamp-2">
+                          {e.notes}
                         </p>
-                        <div className="flex items-center gap-2 mt-1.5 flex-wrap">
-                          <SubjectPill subject={subject} className="text-xs" />
-                          <span className="flex items-center gap-1 text-xs text-fg-subtle">
+                      ) : undefined,
+                      meta: (
+                        <>
+                          <div
+                            className={`flex h-12 w-12 shrink-0 flex-col items-center justify-center rounded-xl ${isPast ? "bg-blue-300 dark:bg-bg-muted" : "bg-danger/10"}`}
+                          >
+                            <span
+                              className={`text-lg font-bold leading-none ${isPast ? "text-fg-subtle" : "text-danger"}`}
+                            >
+                              {Math.abs(days)}
+                            </span>
+                            <span
+                              className={`text-[9px] uppercase ${isPast ? "text-fg-subtle" : "text-danger/70"}`}
+                            >
+                              {isPast ? "days ago" : "days"}
+                            </span>
+                          </div>
+                          <SubjectPill
+                            subject={subject}
+                            className="text-xs text-purple-500"
+                          />
+                          <span className="flex items-center gap-1 text-xs text-bg-surface">
                             <Calendar className="w-3 h-3" />{" "}
                             {formatDateLong(e.date)}
                           </span>
                           {e.time && (
-                            <span className="flex items-center gap-1 text-xs text-fg-subtle">
+                            <span className="flex items-center gap-1 text-xs text-info">
                               <Clock className="w-3 h-3" /> {e.time}
                             </span>
                           )}
                           {e.location && (
-                            <span className="flex items-center gap-1 text-xs text-fg-subtle">
+                            <span className="flex items-center gap-1 text-xs text-green-700">
                               <MapPin className="w-3 h-3" /> {e.location}
                             </span>
                           )}
@@ -240,43 +210,68 @@ export default function Exams() {
                               {relativeDue(e.date)}
                             </Badge>
                           )}
-                        </div>
-                        {e.notes && (
-                          <p className="text-xs text-fg-muted mt-1.5 line-clamp-2">
-                            {e.notes}
-                          </p>
-                        )}
-                        {e.marks !== undefined && e.marks !== null && (
-                          <p className="text-xs font-medium text-success mt-1.5">
-                            Marks: {e.marks}
-                          </p>
-                        )}
-                      </div>
-                      <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity shrink-0">
-                        <button
-                          onClick={() => {
-                            setEditing({ ...e });
-                            setModalOpen(true);
-                          }}
-                          className="p-1.5 rounded-lg hover:bg-bg-muted text-fg-subtle hover:text-fg"
-                        >
-                          <Pencil className="w-3.5 h-3.5" />
-                        </button>
-                        <button
-                          onClick={() => setDeleteTarget(e)}
-                          className="p-1.5 rounded-lg hover:bg-danger/10 text-fg-subtle hover:text-danger"
-                        >
-                          <Trash2 className="w-3.5 h-3.5" />
-                        </button>
-                      </div>
-                    </motion.div>
-                  );
-                })}
-              </AnimatePresence>
+                          {e.marks !== undefined && e.marks !== null && (
+                            <span className="text-xs font-medium text-success">
+                              Marks: {e.marks}
+                            </span>
+                          )}
+                        </>
+                      ),
+                      actions: (
+                        <>
+                          <button
+                            onClick={() => {
+                              setEditing({ ...e });
+                              setModalOpen(true);
+                            }}
+                            className="p-1.5 rounded-lg hover:bg-brand-500 text-brand-600/85 hover:text-fg"
+                          >
+                            <Pencil className="w-3.5 h-3.5" />
+                          </button>
+                          <button
+                            onClick={() => setDeleteTarget(e)}
+                            className="p-1.5 rounded-lg hover:bg-danger/10 text-warning hover:text-danger"
+                          >
+                            <Trash2 className="w-3.5 h-3.5" />
+                          </button>
+                        </>
+                      ),
+                    };
+                  })}
+                  onCheckedChange={toggleComplete}
+                />
+              )}
             </div>
-          )}
+          </Card>
         </div>
-      </Card>
+
+        {/* Summary Cards Rail */}
+        <div className="w-full md:w-56 lg:w-64 xl:w-72 shrink-0 flex flex-col gap-3">
+          {[
+            {
+              label: "Total Exams",
+              value: data.exams.length,
+              color: "text-warning",
+            },
+            { label: "Upcoming", value: upcoming, color: "text-info" },
+            { label: "Past", value: past, color: "text-success" },
+            {
+              label: "Next Exam",
+              value: upcoming > 0 ? "Soon" : "—",
+              color: "text-danger",
+            },
+          ].map((s) => (
+            <Card key={s.label}>
+              <div className="p-4">
+                <p className="text-xs text-bg-surface">{s.label}</p>
+                <p className={`text-2xl font-bold mt-1 ${s.color}`}>
+                  {s.value}
+                </p>
+              </div>
+            </Card>
+          ))}
+        </div>
+      </div>
 
       <AnimatePresence>
         {modalOpen && editing && (
@@ -385,14 +380,22 @@ function ExamModal({
             type="number"
             min={0}
             value={form.marks ?? ""}
-            onChange={(e) => setForm({ ...form, marks: e.target.value === "" ? undefined : Number(e.target.value) })}
+            onChange={(e) =>
+              setForm({
+                ...form,
+                marks:
+                  e.target.value === "" ? undefined : Number(e.target.value),
+              })
+            }
             placeholder="e.g. 85"
           />
           <label className="flex items-center gap-2.5 cursor-pointer self-end pb-2">
             <input
               type="checkbox"
               checked={form.completed ?? false}
-              onChange={(e) => setForm({ ...form, completed: e.target.checked })}
+              onChange={(e) =>
+                setForm({ ...form, completed: e.target.checked })
+              }
               className="w-4 h-4 rounded accent-brand-500"
             />
             <span className="text-sm text-fg-muted">Completed</span>

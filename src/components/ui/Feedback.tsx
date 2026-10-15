@@ -21,12 +21,12 @@ export function EmptyState({
         </div>
       )}
 
-      <h3 className="text-sm font-semibold text-fg">
+      <h3 className="text-sm font-semibold text-bg-surface">
         {title}
       </h3>
 
       {description && (
-        <p className="text-sm text-fg-subtle max-w-md mt-1.5">
+        <p className="text-sm text-bg-surface max-w-md mt-1.5">
           {description}
         </p>
       )}

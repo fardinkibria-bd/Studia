@@ -1,8 +1,8 @@
-import { motion } from 'framer-motion';
-import { Play, Pause, Square, Volume2, Repeat } from 'lucide-react';
-import { useSounds } from '@/store/SoundContext';
-import { useTheme } from '@/store/ThemeContext';
-import { Card } from '@/components/ui/Card';
+import { motion } from "framer-motion";
+import { Play, Pause, Square, Volume2, Repeat } from "lucide-react";
+import { useSounds } from "@/store/SoundContext";
+import { useTheme } from "@/store/ThemeContext";
+import { Card } from "@/components/ui/Card";
 
 /**
  * "Focusing Sounds" panel — a self-contained audio player for ambient study
@@ -10,18 +10,31 @@ import { Card } from '@/components/ui/Card';
  * SoundProvider's single Audio element so only one sound plays at a time.
  */
 export function FocusingSounds() {
-  const { sounds, currentSound, isPlaying, loopEnabled, volume, errorMsg, toggle, stop, toggleLoop, setVolume } = useSounds();
+  const {
+    sounds,
+    currentSound,
+    isPlaying,
+    loopEnabled,
+    volume,
+    errorMsg,
+    toggle,
+    stop,
+    toggleLoop,
+    setVolume,
+  } = useSounds();
   const { reducedMotion } = useTheme();
 
   return (
     <Card>
       <div className="p-5 border-b border-border-default flex items-center gap-2">
-        <Volume2 className="w-4 h-4 text-fg-muted" />
-        <h3 className="font-semibold">Focusing Sounds</h3>
+        <Volume2 className="w-4 h-4 text-brand-500" />
+        <h3 className="font-semibold text-bg-surface">Focusing Sounds</h3>
       </div>
       <div className="p-5 space-y-4">
         {sounds.length === 0 ? (
-          <p className="text-sm text-fg-subtle text-center py-4">No sounds available.</p>
+          <p className="text-sm text-bg-surface text-center py-4">
+            No sounds available.
+          </p>
         ) : (
           <>
             {/* Sound list */}
@@ -36,27 +49,35 @@ export function FocusingSounds() {
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: i * 0.04 }}
                     onClick={() => toggle(s.url)}
-                    className={`group flex items-center gap-3 p-3 rounded-xl border text-left transition-colors ${
+                    className={`group flex items-center gap-3 p-3 rounded-3xl border text-left transition-colors ${
                       active
-                        ? 'bg-brand-500/10 border-brand-500/40'
-                        : 'bg-bg-muted/40 border-border-default hover:border-border-strong'
+                        ? "bg-brand-500/10 border-brand-500/40"
+                        : "border-2 border-bg-surface hover:border-green-500"
                     }`}
-                    aria-label={`${s.name}${playing ? ' — playing' : ''}`}
+                    aria-label={`${s.name}${playing ? " — playing" : ""}`}
                   >
                     <span
-                      className={`w-9 h-9 rounded-lg flex items-center justify-center shrink-0 transition-colors ${
+                      className={`w-9 h-9 rounded-full flex items-center justify-center shrink-0 transition-colors ${
                         active
-                          ? 'bg-brand-500 text-white'
-                          : 'bg-bg-muted text-fg-subtle group-hover:text-fg'
+                          ? "bg-brand-500 text-white"
+                          : "group-hover:text-purple-500 text-green-500 border border-bg-surface"
                       }`}
                     >
-                      {playing ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4 ml-0.5" />}
+                      {playing ? (
+                        <Pause className="w-4 h-4" />
+                      ) : (
+                        <Play className="w-4 h-4 ml-0.5" />
+                      )}
                     </span>
                     <span className="flex-1 min-w-0">
-                      <span className={`block text-sm font-medium truncate ${active ? 'text-brand-500' : 'text-fg'}`}>{s.name}</span>
+                      <span
+                        className={`block text-sm font-medium truncate ${active ? "text-brand-500" : "text-bg-surface"}`}
+                      >
+                        {s.name}
+                      </span>
                       {active && (
                         <span className="block text-[10px] text-fg-subtle">
-                          {playing ? 'Playing' : 'Paused'}
+                          {playing ? "Playing" : "Paused"}
                         </span>
                       )}
                     </span>
@@ -74,9 +95,13 @@ export function FocusingSounds() {
                   disabled={!currentSound}
                   whileTap={reducedMotion ? undefined : { scale: 0.95 }}
                   className="w-9 h-9 rounded-lg bg-brand-500 text-white flex items-center justify-center disabled:opacity-40 disabled:pointer-events-none hover:bg-brand-600 transition-colors"
-                  aria-label={isPlaying ? 'Pause' : 'Play'}
+                  aria-label={isPlaying ? "Pause" : "Play"}
                 >
-                  {isPlaying ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4 ml-0.5" />}
+                  {isPlaying ? (
+                    <Pause className="w-4 h-4" />
+                  ) : (
+                    <Play className="w-4 h-4 ml-0.5" />
+                  )}
                 </motion.button>
                 <motion.button
                   onClick={stop}
@@ -94,8 +119,8 @@ export function FocusingSounds() {
                 onClick={toggleLoop}
                 className={`inline-flex items-center gap-1.5 px-3 h-9 rounded-lg text-sm font-medium transition-colors ${
                   loopEnabled
-                    ? 'bg-brand-500/10 text-brand-500 border border-brand-500/30'
-                    : 'bg-bg-muted text-fg-muted hover:text-fg border border-transparent'
+                    ? "bg-brand-500/10 text-brand-500 border border-brand-500/30"
+                    : "text-black hover:text-green-500 border border-bg-surface"
                 }`}
                 aria-pressed={loopEnabled}
                 aria-label="Toggle loop"
@@ -121,7 +146,9 @@ export function FocusingSounds() {
             </div>
 
             {errorMsg && (
-              <p className="text-xs text-danger bg-danger/5 border border-danger/20 rounded-lg p-2.5">{errorMsg}</p>
+              <p className="text-xs text-danger bg-danger/5 border border-danger/20 rounded-lg p-2.5">
+                {errorMsg}
+              </p>
             )}
           </>
         )}

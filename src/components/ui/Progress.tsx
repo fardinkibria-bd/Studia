@@ -14,7 +14,7 @@ export function Progress({ value, max = 100, className = '', color, size = 'md' 
   const pct = Math.min(Math.max((value / max) * 100, 0), 100);
   const heights = { sm: 'h-1.5', md: 'h-2', lg: 'h-3' };
   return (
-    <div className={`w-full bg-bg-muted rounded-full overflow-hidden ${heights[size]} ${className}`}>
+    <div className={`w-full bg-border-default rounded-full overflow-hidden ${heights[size]} ${className}`}>
       <motion.div
         className={`h-full rounded-full ${color ?? 'bg-brand-500'}`}
         initial={reducedMotion ? false : { width: 0 }}
@@ -58,7 +58,7 @@ export function CircularProgress({
           r={radius}
           fill="none"
           strokeWidth={strokeWidth}
-          className="stroke-bg-muted"
+          className="stroke-border-default"
         />
         <motion.circle
           cx={size / 2}
@@ -76,9 +76,9 @@ export function CircularProgress({
       </svg>
       <div className="absolute inset-0 flex flex-col items-center justify-center">
         {label ? (
-          <span className={`${labelClassName} text-fg`}>{label}</span>
+          <span className={`${labelClassName} text-black`}>{label}</span>
         ) : (
-          <span className="text-2xl font-bold text-fg">{Math.round(value)}%</span>
+          <span className="text-2xl font-bold text-black">{Math.round(value)}%</span>
         )}
       </div>
     </div>

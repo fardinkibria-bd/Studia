@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Arbutus&family=Fontdiner+Swanky&family=Risque&family=Silkscreen:wght@400;700&display=swap");
 
 @import "tailwindcss/base";
 @import "tailwindcss/components";
@@ -7,13 +7,15 @@
 @layer base {
   :root {
     /* Light theme */
-    --bg-base: 248 250 252;
-    --bg-surface: 255 255 255;
+    --bg-base: 255 252 244;
+    --bg-sidebar: 255 252 244;
+    --border-sidebar: 107 53 42;
+    --bg-surface: 107 53 42;
     --bg-elevated: 255 255 255;
-    --bg-muted: 241 245 249;
-    --fg-default: 15 23 42;
-    --fg-muted: 71 85 105;
-    --fg-subtle: 148 163 184;
+    --bg-muted: 107 53 63;
+    --fg-default: 255 241 166;
+    --fg-muted: 232 222 255;
+    --fg-subtle: 255 252 244;
     --border-default: 226 232 240;
     --border-strong: 203 213 225;
 
@@ -40,23 +42,25 @@
 
   .dark {
     /* Dark theme - independently designed, not inverted */
-    --bg-base: 9 11 18;
-    --bg-surface: 17 21 31;
-    --bg-elevated: 23 28 41;
-    --bg-muted: 28 34 49;
-    --fg-default: 237 242 249;
-    --fg-muted: 148 163 184;
-    --fg-subtle: 100 116 139;
-    --border-default: 36 43 61;
-    --border-strong: 51 61 84;
+    --bg-base: 7 11 22;
+    --bg-sidebar: 21 27 41;
+    --border-sidebar: 40 48 72;
+    --bg-surface: 21 27 41;
+    --bg-elevated: 21 27 41;
+    --bg-muted: 37 45 64;
+    --fg-default: 240 240 248;
+    --fg-muted: 160 176 192;
+    --fg-subtle: 112 128 152;
+    --border-default: 40 48 72;
+    --border-strong: 48 56 72;
 
     --brand-50: 12 74 110;
     --brand-100: 7 89 133;
     --brand-200: 3 105 161;
     --brand-300: 2 132 199;
-    --brand-400: 14 165 233;
-    --brand-500: 56 189 248;
-    --brand-600: 125 211 252;
+    --brand-400: 48 176 224;
+    --brand-500: 64 200 248;
+    --brand-600: 96 216 255;
     --brand-700: 186 230 253;
     --brand-800: 224 242 254;
     --brand-900: 240 249 255;
@@ -82,7 +86,7 @@
   }
 
   body {
-    @apply bg-bg-base text-fg font-sans;
+    @apply bg-bg-base text-green-700/85 dark:text-fg font-sans;
     font-feature-settings: "cv11", "ss01";
   }
 
@@ -120,11 +124,191 @@
   }
 
   .glass-strong {
-    @apply bg-bg-surface/85 backdrop-blur-2xl border border-border-default;
+    @apply bg-white/30 backdrop-blur-sm border-2 border-bg-surface;
+  }
+
+  .sidebar-surface {
+    background-color: rgb(var(--bg-sidebar));
+  }
+
+  .sidebar-divider {
+    border-color: rgb(var(--border-sidebar));
   }
 
   .card-base {
-    @apply bg-bg-surface border border-border-default rounded-2xl;
+    @apply rounded-2xl relative;
+    overflow: hidden;
+    background-color: #faf8f3;
+    border: 2px solid #e8e0d0;
+    box-shadow:
+      0 2px 4px rgba(85, 75, 60, 0.05),
+      0 8px 16px -2px rgba(85, 75, 60, 0.08),
+      0 24px 40px -10px rgba(85, 75, 60, 0.08);
+  }
+
+  /* Ensure card content wrapper gets proper background in both modes */
+  .card-base > div:not(.skeleton) {
+    margin: 0.75rem;
+    border: 1px solid rgba(220, 210, 194, 0.9);
+    border-radius: 0.875rem;
+    background: rgba(255, 253, 248, 0.94);
+    box-shadow:
+      0 1px 1px rgba(85, 75, 60, 0.04),
+      0 5px 12px rgba(85, 75, 60, 0.08);
+  }
+
+  .card-base > div:not(.skeleton) + div:not(.skeleton) {
+    margin-top: 0.5rem;
+  }
+
+  .card-base > div:not(.skeleton) > .border-b {
+    border-bottom-color: rgba(220, 210, 194, 0.75);
+  }
+
+  .card-base::before,
+  .paper-card::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image:
+      /* Vertical ruled lines */
+      linear-gradient(to right, #ece7db 1px, transparent 1px),
+      /* Horizontal ruled lines */
+        linear-gradient(to bottom, #ece7db 1px, transparent 1px);
+    background-size:
+      32px 100%,
+      100% 32px;
+    background-position:
+      0 8px,
+      0 8px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .card-base > *,
+  .paper-card > * {
+    position: relative;
+    z-index: 1;
+  }
+
+  /* Subtle college/legal ruled horizontal faint guide lines spaced at 32px */
+  .ruled-notebook-paper {
+    background-color: #faf8f3;
+    background-image:
+      linear-gradient(
+        to right,
+        transparent 54px,
+        rgba(235, 120, 120, 0.22) 54px,
+        rgba(235, 120, 120, 0.22) 55.5px,
+        transparent 55.5px
+      ),
+      linear-gradient(to bottom, #ece7db 1px, transparent 1px);
+    background-size:
+      100% 100%,
+      100% 32px;
+    background-position:
+      0 0,
+      0 8px;
+  }
+
+  /* Standard clean notebook grid without the red margin bar for compact widgets */
+  .ruled-compact-paper {
+    background-color: #faf8f3;
+    background-image: linear-gradient(to bottom, #ece7db 1px, transparent 1px);
+    background-size: 100% 30px;
+    background-position: 0 10px;
+  }
+
+  .paper-card {
+    background-color: #faf8f3;
+    border: 2px solid #e8e0d0;
+    overflow: hidden;
+    box-shadow:
+      0 2px 4px rgba(85, 75, 60, 0.05),
+      0 8px 16px -2px rgba(85, 75, 60, 0.08),
+      0 24px 40px -10px rgba(85, 75, 60, 0.08);
+    position: relative;
+  }
+
+  /* Tactile Dog-Eared / Folded Corner Styles */
+  .dogear-tr {
+    position: relative;
+    background: linear-gradient(225deg, transparent 24px, #faf8f3 24px);
+  }
+  .dogear-tr::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 0 25px 25px 0;
+    border-color: transparent #e8e0d0 transparent transparent;
+    border-bottom-left-radius: 4px;
+    border-top-right-radius: 14px;
+    box-shadow: -2px 2px 5px rgba(60, 50, 35, 0.12);
+    pointer-events: none;
+  }
+
+  .dogear-tl {
+    position: relative;
+    background: linear-gradient(135deg, transparent 24px, #faf8f3 24px);
+  }
+  .dogear-tl::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 25px 25px 0 0;
+    border-color: #e8e0d0 transparent transparent transparent;
+    border-bottom-right-radius: 4px;
+    border-top-left-radius: 14px;
+    box-shadow: 2px 2px 5px rgba(60, 50, 35, 0.12);
+    pointer-events: none;
+  }
+
+  .dogear-br {
+    position: relative;
+    background: linear-gradient(315deg, transparent 24px, #faf8f3 24px);
+  }
+  .dogear-br::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 0 0 25px 25px;
+    border-color: transparent transparent #e8e0d0 transparent;
+    border-top-left-radius: 4px;
+    border-bottom-right-radius: 14px;
+    box-shadow: -2px -2px 5px rgba(60, 50, 35, 0.12);
+    pointer-events: none;
+  }
+
+  .dogear-bl {
+    position: relative;
+    background: linear-gradient(45deg, transparent 24px, #faf8f3 24px);
+  }
+  .dogear-bl::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 25px 0 0 25px;
+    border-color: transparent transparent transparent #e8e0d0;
+    border-top-right-radius: 4px;
+    border-bottom-left-radius: 14px;
+    box-shadow: 2px -2px 5px rgba(60, 50, 35, 0.12);
+    pointer-events: none;
   }
 
   .gradient-text {
@@ -172,6 +356,267 @@
       transparent
     );
     animation: shimmer 1.8s infinite;
+  }
+
+  /* ========================================
+     DARK MODE CARD & PAPER RESETS
+     Preserves light mode notebook theme
+     while providing clean dark mode UI
+     ======================================== */
+
+  /* Dark mode card base - elevated surface with proper depth */
+  .dark .card-base {
+    background-color: rgb(var(--bg-elevated)) !important;
+    border: 1px solid rgb(var(--border-default)) !important;
+    box-shadow:
+      0 1px 2px rgba(0, 0, 0, 0.25),
+      0 2px 4px rgba(0, 0, 0, 0.15),
+      0 4px 8px rgba(0, 0, 0, 0.1) !important;
+    overflow: hidden;
+  }
+
+  /* Fix card content wrapper in dark mode */
+  .dark .card-base > div:not(.skeleton) {
+    margin: 0 !important;
+    border: none !important;
+    border-radius: 0 !important;
+    background: transparent !important;
+    box-shadow: none !important;
+  }
+
+  /* Remove notebook grid pattern in dark mode */
+  .dark .card-base::before,
+  .dark .paper-card::before {
+    display: none !important;
+  }
+
+  /* Fix border colors in dark mode */
+  .dark .card-base .border-b {
+    border-bottom-color: rgb(var(--border-default)) !important;
+  }
+
+  .dark .card-base .border-b-border-default {
+    border-bottom-color: rgb(var(--border-default)) !important;
+  }
+
+  /* Ensure proper padding in dark mode */
+  .dark .card-base .p-5 {
+    padding: 1.25rem !important;
+  }
+
+  /* Dark mode hover states for cards */
+  .dark .card-base.hover\:shadow-float:hover {
+    box-shadow:
+      0 4px 8px rgba(0, 0, 0, 0.3),
+      0 8px 16px rgba(0, 0, 0, 0.2),
+      0 16px 32px rgba(0, 0, 0, 0.15) !important;
+  }
+
+  .dark .paper-card {
+    background-color: rgb(var(--bg-surface)) !important;
+    border: 1px solid rgb(var(--border-default)) !important;
+    box-shadow: none !important;
+  }
+
+  .dark .ruled-notebook-paper,
+  .dark .ruled-compact-paper {
+    background-color: transparent !important;
+    background-image: none !important;
+  }
+
+  .dark .dogear-tr,
+  .dark .dogear-tl,
+  .dark .dogear-br,
+  .dark .dogear-bl {
+    background: rgb(var(--bg-elevated)) !important;
+  }
+
+  .dark .dogear-tr::after,
+  .dark .dogear-tl::after,
+  .dark .dogear-br::after,
+  .dark .dogear-bl::after {
+    display: none !important;
+  }
+
+  .dark .text-bg-surface {
+    color: rgb(var(--fg-muted)) !important;
+  }
+
+  .dark .text-bg-surface\/80,
+  .dark .text-bg-surface\/100 {
+    color: rgb(var(--fg-subtle)) !important;
+  }
+
+  .dark h1.text-bg-surface,
+  .dark h2.text-bg-surface,
+  .dark h3.text-bg-surface,
+  .dark h4.text-bg-surface,
+  .dark .font-semibold.text-bg-surface,
+  .dark .font-bold.text-bg-surface,
+  .dark .font-medium.text-bg-surface {
+    color: rgb(var(--fg-default)) !important;
+  }
+
+  .dark .border-bg-surface,
+  .dark .border-bg-surface\/100 {
+    border-color: rgb(var(--border-default)) !important;
+  }
+
+  /* Fix border-bg-surface on sidebar and topbar layout borders */
+  .dark .border-r.border-bg-surface {
+    border-right-color: rgb(var(--border-default)) !important;
+  }
+  .dark .border-b.border-bg-surface {
+    border-bottom-color: rgb(var(--border-default)) !important;
+  }
+  .dark .border-l.border-bg-surface {
+    border-left-color: rgb(var(--border-default)) !important;
+  }
+
+  /* Input and Select fields with bg-surface border */
+  .dark input.border-bg-surface,
+  .dark select.border-bg-surface {
+    border-color: rgb(var(--border-default)) !important;
+    color: rgb(var(--fg-default)) !important;
+    background-color: rgb(var(--bg-surface)) !important;
+  }
+
+  /* Inline containers with border-bg-surface (e.g., filter pill groups) */
+  .dark .border-2.border-bg-surface,
+  .dark .border.border-bg-surface {
+    border-color: rgb(var(--border-default)) !important;
+  }
+
+  .dark h1.text-green-700\/85,
+  .dark h2.text-green-700\/85,
+  .dark h3.text-green-700\/85 {
+    color: rgb(var(--fg-default)) !important;
+  }
+
+  .dark .text-purple-500,
+  .dark .text-purple-600 {
+    color: rgb(var(--fg-default)) !important;
+  }
+
+  .dark .text-green-500,
+  .dark .text-green-500\/85,
+  .dark .text-green-600 {
+    color: rgb(var(--brand-500)) !important;
+  }
+
+  .dark .text-bg-muted {
+    color: rgb(var(--fg-muted)) !important;
+  }
+
+  /* Keep active and hover accents cyan in dark mode. */
+  .dark .hover\:text-green-600:hover,
+  .dark .hover\:text-green-500:hover {
+    color: rgb(var(--brand-500)) !important;
+  }
+
+  /* Fix text-green-700 used on body/elements in dark mode */
+  .dark .text-green-700,
+  .dark .text-green-700\/85 {
+    color: rgb(var(--fg-muted)) !important;
+  }
+
+  /* Ensure headings with green-700 are full brightness in dark mode */
+  .dark h1.text-green-700,
+  .dark h2.text-green-700,
+  .dark h3.text-green-700,
+  .dark .font-bold.text-green-700,
+  .dark .font-semibold.text-green-700 {
+    color: rgb(var(--fg-default)) !important;
+  }
+
+  /* Fix border-green-600 in dark mode */
+  .dark .border-green-600 {
+    border-color: rgb(var(--fg-muted)) !important;
+  }
+
+  /* Fix bg-green-400 in dark mode */
+  .dark .bg-green-400 {
+    background-color: rgb(var(--brand-800)) !important;
+  }
+
+  .dark .text-black {
+    color: rgb(var(--fg-default)) !important;
+  }
+
+  /* Streak badge in topbar — keep green tint visible but soften */
+  .dark .bg-green-400\/15 {
+    background-color: rgb(var(--bg-muted)) !important;
+  }
+
+  /* ========================================
+     ACTIVE SIDEBAR TAB — NOTEBOOK PAPER
+     (LIGHT MODE ONLY)
+     Mirrors the .card-base / .paper-card paper aesthetic so the
+     active menu tab reads as a small paper card and stands out.
+     Dark mode is fully reset at the bottom and stays untouched.
+     ======================================== */
+  .sidebar-paper-active {
+    background-color: #faf8f3;
+    box-shadow:
+      /* Paper border via inset shadow (keeps content aligned) */
+      inset 0 0 0 2px #e8e0d0,
+      /* Elevation, matching card-base */ 0 2px 4px rgba(85, 75, 60, 0.05),
+      0 8px 16px -2px rgba(85, 75, 60, 0.08);
+  }
+
+  /* Notebook ruled grid (vertical + horizontal), same as cards */
+  .sidebar-paper-active::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background-image:
+      /* Vertical ruled lines */
+      linear-gradient(to right, #ece7db 1px, transparent 1px),
+      /* Horizontal ruled lines */
+        linear-gradient(to bottom, #ece7db 1px, transparent 1px);
+    background-size:
+      32px 100%,
+      100% 32px;
+    background-position:
+      0 8px,
+      0 8px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* Float the tab content above the ruled lines */
+  .sidebar-paper-active > * {
+    position: relative;
+    z-index: 1;
+  }
+
+  /* Dark mode keeps its original look — remove paper and grid, but
+     restore the standard active highlight tint (matches bg-brand-500/10).
+     On the desktop sidebar this is still overridden by its dark:bg-bg-muted/20
+     utility, so desktop dark mode is unchanged. */
+  .dark .sidebar-paper-active {
+    background-color: rgb(var(--brand-500) / 0.1);
+    box-shadow: none;
+  }
+  .dark .sidebar-paper-active::before {
+    display: none;
+  }
+}
+
+/* Imported Fonts */
+@layer utilities {
+  .font-brand {
+    font-family: "Risque", cursive;
+  }
+  .font-greeting {
+    font-family: "Fontdiner Swanky", cursive;
+  }
+  .font-title {
+    font-family: "Silkscreen", cursive;
+  }
+  .font-titles {
+    font-family: "Arbutus", cursive;
   }
 }
 

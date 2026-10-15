@@ -1,9 +1,9 @@
-import { motion } from 'framer-motion';
-import { Sun, Moon, ChevronLeft } from 'lucide-react';
-import { useTheme } from '@/store/ThemeContext';
-import { useStore } from '@/store/StoreContext';
-import { NAV_ITEMS } from '@/lib/nav';
-import { activeStreak } from '@/lib/utils';
+import { motion } from "framer-motion";
+import { Sun, Moon, ChevronLeft, Flame } from "lucide-react";
+import { useTheme } from "@/store/ThemeContext";
+import { useStore } from "@/store/StoreContext";
+import { NAV_ITEMS } from "@/lib/nav";
+import { activeStreak } from "@/lib/utils";
 
 interface TopBarProps {
   current: string;
@@ -17,10 +17,13 @@ export function TopBar({ current, onOpenMobileNav, onBack }: TopBarProps) {
   const navItem = NAV_ITEMS.find((n) => n.id === current);
 
   return (
-    <header className="h-16 sticky top-0 z-20 glass border-b border-border-default flex items-center justify-between px-4 lg:px-6">
+    <header className="h-16 sticky top-0 z-20 bg-bg-base dark:bg-bg-surface/70 dark:backdrop-blur-xl border-b border-bg-surface dark:border-border-default flex items-center justify-between px-4 lg:px-6">
       <div className="flex items-center gap-3">
         {onBack ? (
-          <button onClick={onBack} className="lg:hidden text-fg-muted hover:text-fg transition-colors">
+          <button
+            onClick={onBack}
+            className="lg:hidden text-fg-muted hover:text-fg transition-colors"
+          >
             <ChevronLeft className="w-5 h-5" />
           </button>
         ) : (
@@ -29,29 +32,50 @@ export function TopBar({ current, onOpenMobileNav, onBack }: TopBarProps) {
             className="lg:hidden flex items-center gap-2 text-fg-muted hover:text-fg transition-colors cursor-pointer"
             aria-label="Open menu"
           >
-            <img src={`${import.meta.env.BASE_URL}logo.jpg`} alt="Studia" className="w-9 h-9 rounded-xl object-cover shrink-0 shadow-glow" />
-            <span className="font-bold text-lg text-fg">Studia</span>
+            <img
+              src={`${import.meta.env.BASE_URL}logo.jpg`}
+              alt="Studia"
+              className="w-9 h-9 rounded-xl object-cover shrink-0 shadow-glow"
+            />
+            <span className="font-brand font-bold text-3xl text-info">
+              Studia
+            </span>
           </button>
         )}
-        <div className="hidden lg:flex items-center gap-2">
-          {navItem && <navItem.icon className="w-5 h-5 text-brand-500" />}
-          <h1 className="font-semibold text-fg text-lg">{navItem?.label ?? 'Studia'}</h1>
+        <div className="font-titles hidden lg:flex items-center gap-2">
+          {navItem && (
+            <navItem.icon className="w-5 h-5 text-bg-surface dark:text-brand-500" />
+          )}
+          <h1 className="font-semibold text-bg-surface dark:text-fg text-lg">
+            {navItem?.label ?? "Studia"}
+          </h1>
         </div>
       </div>
 
       <div className="flex items-center gap-2">
-        <div className="flex items-center gap-1.5 px-2.5 h-9 rounded-lg bg-warning/10 border border-warning/20">
-          <span className="text-warning text-sm font-semibold">{activeStreak(data.streak)}</span>
-          <span className="text-warning text-sm">🔥</span>
+        <div className="flex items-center gap-1.5 px-2.5 h-9 rounded-lg bg-green-400/15 border border-green-600/20 dark:border-warning/20">
+          <Flame className="w-5 h-5 text-warning shrink-0" />
+          <span className="text-warning text-sm font-semibold">
+            {activeStreak(data.streak)}
+          </span>
         </div>
 
         <button
           onClick={toggle}
-          className="w-10 h-10 rounded-lg flex items-center justify-center text-fg-muted hover:text-fg hover:bg-bg-muted transition-colors"
+          className="w-10 h-10 rounded-lg flex items-center justify-center text-bg-surface hover:text-fg hover:bg-bg-muted transition-colors"
           aria-label="Toggle theme"
         >
-          <motion.div key={theme} initial={reducedMotion ? false : { rotate: -90, opacity: 0 }} animate={{ rotate: 0, opacity: 1 }} transition={{ duration: 0.2 }}>
-            {theme === 'dark' ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
+          <motion.div
+            key={theme}
+            initial={reducedMotion ? false : { rotate: -90, opacity: 0 }}
+            animate={{ rotate: 0, opacity: 1 }}
+            transition={{ duration: 0.2 }}
+          >
+            {theme === "dark" ? (
+              <Sun className="w-5 h-5" />
+            ) : (
+              <Moon className="w-5 h-5" />
+            )}
           </motion.div>
         </button>
       </div>

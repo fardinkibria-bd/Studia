@@ -45,6 +45,7 @@ export interface Todo {
   priority: Priority;
   completed: boolean;
   createdAt: string;
+  completedAt?: string;
 }
 
 export interface RevisionTopic {
@@ -56,6 +57,8 @@ export interface RevisionTopic {
   completed: boolean;
   inProgress?: boolean;
   notes?: string;
+  createdAt?: string;
+  completedAt?: string;
 }
 
 export interface Exam {
@@ -99,6 +102,8 @@ export interface Goal {
   deadline: string;
   category: 'study_time' | 'homework' | 'revision' | 'streak' | 'custom';
   completed: boolean;
+  createdAt?: string;
+  completedAt?: string;
 }
 
 export interface Achievement {

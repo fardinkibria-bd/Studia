@@ -6,7 +6,7 @@ export default {
     extend: {
       colors: {
         bg: {
-          base: "rgb(var(--bg-base) / <alpha-value>)",
+          base: "rgb(var(--bg-base, var(--bg_base)) / <alpha-value>)",
           surface: "rgb(var(--bg-surface) / <alpha-value>)",
           elevated: "rgb(var(--bg-elevated) / <alpha-value>)",
           muted: "rgb(var(--bg-muted) / <alpha-value>)",
