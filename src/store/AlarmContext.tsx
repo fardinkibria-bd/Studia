@@ -2,8 +2,8 @@
 import { createContext, useCallback, useContext, useEffect, useRef, useState, type ReactNode } from 'react';
 import { AlarmNotification } from '@/components/ui/AlarmNotification';
 
-// Base-aware URL so the alarm mp3 (served from public/) also works under a
-// non-root deployment base (vite.config.ts sets base: '/studia/').
+// Base-aware URL so the alarm mp3 (served from public/) works under the
+// configured Vite deployment base.
 const ALARM_SRC = `${import.meta.env.BASE_URL}alarm.mp3`;
 const STORAGE_KEY = 'studia:alarm:state';
 const HEARTBEAT_KEY = 'studia:alarm:heartbeat';

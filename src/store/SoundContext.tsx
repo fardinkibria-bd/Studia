@@ -30,9 +30,9 @@ const SoundContext = createContext<SoundContextValue | null>(null);
  * URL of every MP3 file directly inside public/ (alarm.mp3 is excluded — it is
  * the Focus session-completion alarm played by AlarmContext, not an ambient
  * focusing sound). Each URL is joined with import.meta.env.BASE_URL so the
- * audio also loads when the app is deployed under a non-root base
- * (vite.config.ts sets base: '/studia/'). Human-friendly display names are
- * derived from the original filenames for the UI only.
+ * audio also loads when the app is deployed under its configured Vite base.
+ * Human-friendly display names are derived from the original filenames for
+ * the UI only.
  */
 const SOUNDS: FocusSound[] = SOUND_FILES.map((url) => {
   const filename = url.split('/').pop() ?? '';

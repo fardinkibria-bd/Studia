@@ -4,7 +4,8 @@ import { fileURLToPath, URL } from 'node:url';
 import { generateSoundsManifest } from './scripts/generate-sounds-manifest.mjs';
 
 export default defineConfig({
-  base: '/studia/',
+  // Studia is served from the domain root on Netlify.
+  base: '/',
   plugins: [
     react(),
     {
@@ -13,17 +14,6 @@ export default defineConfig({
       name: 'sounds-manifest',
       buildStart() {
         generateSoundsManifest();
-      },
-    },
-    {
-      name: 'root-favicon',
-      configureServer(server) {
-        server.middlewares.use((req, res, next) => {
-          if (req.url && (req.url === '/favicon.ico' || req.url.startsWith('/favicon.ico?'))) {
-            req.url = '/studia' + req.url;
-          }
-          next();
-        });
       },
     },
   ],
