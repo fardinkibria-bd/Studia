@@ -127,6 +127,10 @@
     @apply bg-white/30 backdrop-blur-sm border-2 border-bg-surface;
   }
 
+  .glass-strong-landing{
+    @apply bg-black/30 backdrop-blur-sm;
+  }
+
   .sidebar-surface {
     background-color: rgb(var(--bg-sidebar));
   }

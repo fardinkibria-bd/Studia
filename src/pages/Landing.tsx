@@ -67,7 +67,7 @@ export default function Landing({ onEnter }: LandingProps) {
   return (
     <div className="min-h-screen bg-bg-base text-fg overflow-x-hidden">
       {/* Nav */}
-      <nav className="fixed top-0 left-0 right-0 z-50 glass border-b border-border-default">
+      <nav className="fixed top-0 left-0 right-0 z-50 glass-strong dark:glass-strong-landing dark:border-none">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
           <div className="flex items-center gap-2.5">
             <img
@@ -75,23 +75,23 @@ export default function Landing({ onEnter }: LandingProps) {
               alt="Studia"
               className="w-9 h-9 rounded-xl object-cover shadow-glow"
             />
-            <span className="font-brand font-bold text-lg">Studia</span>
+            <span className="font-brand text-info font-bold text-2xl">Studia</span>
           </div>
-          <div className="hidden md:flex items-center gap-8 text-sm text-fg-muted">
-            <a href="#features" className="hover:text-fg transition-colors">
+          <div className="hidden md:flex items-center gap-8 text-base text-bg-surface font-title">
+            <a href="#features" className="hover:text-green-500 transition-colors">
               Features
             </a>
-            <a href="#preview" className="hover:text-fg transition-colors">
+            <a href="#preview" className="hover:text-green-500 transition-colors">
               Preview
             </a>
-            <a href="#workflow" className="hover:text-fg transition-colors">
+            <a href="#workflow" className="hover:text-green-500 transition-colors">
               Workflow
             </a>
           </div>
           <div className="flex items-center gap-2">
             <button
               onClick={toggle}
-              className="w-10 h-10 rounded-lg flex items-center justify-center text-fg-muted hover:text-fg hover:bg-bg-muted transition-colors"
+              className="w-10 h-10 rounded-lg flex items-center justify-center text-bg-surface hover:text-fg hover:bg-bg-muted transition-colors"
               aria-label="Toggle theme"
             >
               {theme === "dark" ? (
@@ -118,9 +118,9 @@ export default function Landing({ onEnter }: LandingProps) {
       >
         {/* Animated background */}
         <div className="absolute inset-0 grid-pattern opacity-30 [mask-image:radial-gradient(ellipse_at_center,black,transparent_70%)]" />
-        <div className="absolute top-20 left-1/4 w-72 h-72 bg-brand-500/20 rounded-full blur-3xl animate-pulse" />
+        <div className="absolute top-20 left-1/4 w-72 h-72 bg-info/30 dark:bg-brand-500/20 rounded-full blur-3xl animate-pulse" />
         <div
-          className="absolute top-40 right-1/4 w-96 h-96 bg-accent-500/15 rounded-full blur-3xl animate-pulse"
+          className="absolute top-40 right-1/4 w-96 h-96 bg-purple-500/30 dark:bg-accent-500/15 rounded-full blur-3xl animate-pulse"
           style={{ animationDelay: "1s" }}
         />
 
@@ -129,7 +129,7 @@ export default function Landing({ onEnter }: LandingProps) {
             initial={reducedMotion ? false : { opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
-            className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-brand-500/10 border border-brand-500/20 text-brand-500 text-sm font-medium mb-6"
+            className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-brand-500/10 border border-brand-500/50 text-brand-500 text-sm font-medium mb-6"
           >
             <Sparkles className="w-4 h-4" />
             The next-gen study planner
@@ -139,18 +139,18 @@ export default function Landing({ onEnter }: LandingProps) {
             initial={reducedMotion ? false : { opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.05 }}
-            className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight max-w-4xl mx-auto leading-[1.1]"
+            className="text-4xl text-purple-500 sm:text-5xl md:text-6xl lg:text-7xl font-bold font-titles tracking-tight max-w-4xl mx-auto leading-[1.1]"
           >
             Plan smarter.
             <br />
-            <span className="gradient-text">Study better.</span>
+            <span className="gradient-text font-greeting">Study better.</span>
           </motion.h1>
 
           <motion.p
             initial={reducedMotion ? false : { opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.1 }}
-            className="mt-6 text-lg text-fg-muted max-w-2xl mx-auto leading-relaxed"
+            className="mt-6 text-lg text-bg-surface max-w-2xl mx-auto leading-relaxed"
           >
             Organize your entire academic life in one beautiful place. Routines,
             homework, revision, exams, focus sessions, and analytics — designed
@@ -184,10 +184,10 @@ export default function Landing({ onEnter }: LandingProps) {
           </motion.div>
 
           <div className="mt-6 flex items-center justify-center gap-6 text-sm text-fg-subtle">
-            <span className="flex items-center gap-1.5">
+            <span className=" text-bg-surface flex items-center gap-1.5">
               <Check className="w-4 h-4 text-success" /> No setup required
             </span>
-            <span className="hidden sm:flex items-center gap-1.5">
+            <span className="text-bg-surface hidden sm:flex items-center gap-1.5">
               <Zap className="w-4 h-4 text-warning" /> Works offline
             </span>
           </div>
@@ -205,12 +205,12 @@ export default function Landing({ onEnter }: LandingProps) {
             transition={{ duration: 0.7, delay: 0.2, ease: [0.4, 0, 0.2, 1] }}
             className="relative"
           >
-            <div className="absolute -inset-4 bg-gradient-to-r from-brand-500/20 to-accent-500/20 rounded-3xl blur-2xl" />
+            <div className="absolute -inset-4 dark:bg-gradient-to-r from-brand-500/20 to-accent-500/20 rounded-3xl blur-2xl" />
             <div className="relative glass-strong rounded-2xl shadow-float overflow-hidden">
               <div className="h-9 bg-bg-muted/50 border-b border-border-default flex items-center gap-2 px-4">
                 <div className="w-3 h-3 rounded-full bg-danger/60" />
                 <div className="w-3 h-3 rounded-full bg-warning/60" />
-                <div className="w-3 h-3 rounded-full bg-success/60" />
+                <div className="w-3 h-3 rounded-full bg-success/70" />
               </div>
               <div className="p-4 sm:p-6 grid grid-cols-2 md:grid-cols-4 gap-3">
                 {[
@@ -254,7 +254,7 @@ export default function Landing({ onEnter }: LandingProps) {
                   </motion.div>
                 ))}
                 <div className="col-span-2 md:col-span-3 card-base p-4">
-                  <p className="text-xs text-fg-subtle mb-3">
+                  <p className="text-xs text-bg-muted mb-3">
                     Weekly Study Time
                   </p>
                   <div className="flex items-end gap-1.5 h-24">
@@ -273,14 +273,14 @@ export default function Landing({ onEnter }: LandingProps) {
                       />
                     ))}
                   </div>
-                  <div className="flex justify-between mt-2 text-[10px] text-fg-subtle">
+                  <div className="flex justify-between mt-2 text-[10px] text-bg-muted">
                     {["M", "T", "W", "T", "F", "S", "S"].map((d, i) => (
                       <span key={i}>{d}</span>
                     ))}
                   </div>
                 </div>
                 <div className="card-base p-4 flex flex-col items-center justify-center">
-                  <p className="text-xs text-fg-subtle mb-2">Completion</p>
+                  <p className="text-xs text-bg-surface mb-2">Completion</p>
                   <div className="relative w-16 h-16">
                     <svg className="w-16 h-16 -rotate-90">
                       <circle
@@ -289,7 +289,7 @@ export default function Landing({ onEnter }: LandingProps) {
                         r="28"
                         fill="none"
                         strokeWidth="6"
-                        className="stroke-bg-muted"
+                        className="stroke-fg-muted"
                       />
                       <motion.circle
                         cx="32"
@@ -311,7 +311,7 @@ export default function Landing({ onEnter }: LandingProps) {
                         }}
                       />
                     </svg>
-                    <span className="absolute inset-0 flex items-center justify-center text-sm font-bold">
+                    <span className="absolute inset-0 flex items-center justify-center text-sm text-bg-muted font-bold">
                       68%
                     </span>
                   </div>
@@ -326,10 +326,10 @@ export default function Landing({ onEnter }: LandingProps) {
       <section id="features" className="py-20 px-4 sm:px-6">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-12">
-            <h2 className="text-3xl sm:text-4xl font-bold tracking-tight">
+            <h2 className="text-3xl sm:text-4xl font-title text-green-500 tracking-tight">
               Everything you need to stay on track
             </h2>
-            <p className="mt-3 text-fg-muted max-w-2xl mx-auto">
+            <p className="mt-3 text-bg-surface max-w-2xl mx-auto">
               A complete toolkit for academic productivity, crafted with
               intention.
             </p>
@@ -348,8 +348,8 @@ export default function Landing({ onEnter }: LandingProps) {
                 <div className="w-12 h-12 rounded-xl bg-brand-500/10 flex items-center justify-center mb-4 group-hover:bg-brand-500/20 transition-colors">
                   <f.icon className="w-6 h-6 text-brand-500" />
                 </div>
-                <h3 className="font-semibold text-lg mb-1.5">{f.title}</h3>
-                <p className="text-sm text-fg-muted leading-relaxed">
+                <h3 className="font-medium text-lg text-purple-400 dark:text-white mb-1.5">{f.title}</h3>
+                <p className="text-sm text-bg-muted leading-relaxed">
                   {f.desc}
                 </p>
               </motion.div>
@@ -361,15 +361,15 @@ export default function Landing({ onEnter }: LandingProps) {
       {/* Workflow */}
       <section
         id="workflow"
-        className="py-20 px-4 sm:px-6 bg-bg-surface/50 border-y border-border-default"
+        className="py-20 px-4 sm:px-6 bg-bg-surface/80 border-y border-border-default"
       >
         <div className="max-w-5xl mx-auto">
           <div className="text-center mb-12">
-            <h2 className="text-3xl sm:text-4xl font-bold tracking-tight">
+            <h2 className="text-3xl sm:text-4xl font-title text-white tracking-tight">
               Built for how students actually work
             </h2>
           </div>
-          <div className="space-y-8">
+          <div className="space-y-8 text-">
             {[
               {
                 step: "01",
@@ -400,7 +400,7 @@ export default function Landing({ onEnter }: LandingProps) {
                 transition={{ delay: i * 0.08 }}
                 className="flex gap-4 sm:gap-6 items-start"
               >
-                <span className="text-3xl sm:text-4xl font-bold gradient-text shrink-0 w-16">
+                <span className="text-3xl sm:text-4xl font-bold text-white dark:gradient-text shrink-0 w-16">
                   {s.step}
                 </span>
                 <div className="pt-1">
@@ -424,12 +424,12 @@ export default function Landing({ onEnter }: LandingProps) {
             viewport={{ once: true }}
             className="relative"
           >
-            <div className="absolute -inset-6 bg-gradient-to-r from-brand-500/20 to-accent-500/20 rounded-3xl blur-3xl" />
+            <div className="absolute -inset-6 dark:bg-gradient-to-r from-brand-500/20 to-accent-500/20 rounded-3xl blur-3xl" />
             <div className="relative card-base p-8 sm:p-12">
-              <h2 className="text-3xl sm:text-4xl font-bold tracking-tight">
+              <h2 className="text-3xl sm:text-4xl font-greeting text-info tracking-tight">
                 Ready to study smarter?
               </h2>
-              <p className="mt-3 text-fg-muted">
+              <p className="mt-3 text-bg-surface">
                 Join the next generation of organized students. No account
                 needed to get started.
               </p>
@@ -437,7 +437,7 @@ export default function Landing({ onEnter }: LandingProps) {
                 <Button
                   size="lg"
                   onClick={onEnter}
-                  className="bg-brand-500/90 hover:bg-brand-500/100 mt-10"
+                  className="bg-brand-500/90 hover:bg-brand-500/100 m-6"
                 >
                   Open Studia <ArrowRight className="w-5 h-5" />
                 </Button>
@@ -447,7 +447,7 @@ export default function Landing({ onEnter }: LandingProps) {
         </div>
       </section>
 
-      <footer className="border-t border-border-default py-8 px-4 sm:px-6">
+      <footer className="border-t border-bg-surface py-8 px-4 sm:px-6">
         <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-fg-subtle">
           <div className="flex items-center gap-2">
             <img
@@ -455,9 +455,9 @@ export default function Landing({ onEnter }: LandingProps) {
               alt="Studia"
               className="w-7 h-7 rounded-lg object-cover"
             />
-            <span className="font-brand font-medium text-fg">Studia</span>
+            <span className="font-brand text-lg text-info">Studia</span>
           </div>
-          <p>Crafted for students who plan to succeed.</p>
+          <p className="text-bg-surface font-titles">Crafted for students who plan to succeed.</p>
         </div>
       </footer>
     </div>
