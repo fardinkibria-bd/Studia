@@ -30,7 +30,6 @@ export function MobileNav({
       "homework",
       "exams",
       "calendar",
-      "focus",
     ].includes(n.id),
   );
 

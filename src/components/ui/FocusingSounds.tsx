@@ -54,7 +54,7 @@ export function FocusingSounds() {
                         ? "bg-brand-500/10 border-brand-500/40"
                         : "border-2 border-bg-surface hover:border-green-500"
                     }`}
-                    aria-label={`${s.name}${playing ? " — playing" : ""}`}
+                    aria-label={`${s.name}${playing ? " — playing" : ""}${active && !playing ? " - paused" : ""}`}
                   >
                     <span
                       className={`w-9 h-9 rounded-full flex items-center justify-center shrink-0 transition-colors ${
@@ -76,7 +76,7 @@ export function FocusingSounds() {
                         {s.name}
                       </span>
                       {active && (
-                        <span className="block text-[10px] text-fg-subtle">
+                        <span className="block text-[10px] text-bg-surface">
                           {playing ? "Playing" : "Paused"}
                         </span>
                       )}
