@@ -320,15 +320,15 @@ export default function Settings() {
         <div className="p-5 border-b border-border-default flex items-center gap-2">
           <Monitor className="w-4 h-4 text-brand-500" />
           <h3 className="font-titles text-bg-surface">Data Management</h3>
-        </div>
-        <div className="p-5">
-          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 p-4 rounded-xl bg-danger/5 border border-danger/20">
-            <div>
-              <div className="flex flex-wrap gap-2 mb-4">
+          <div className="flex flex-wrap gap-5 ml-auto">
                 <Button variant="secondary" onClick={exportData}><Download className="w-4 h-4" /> Export backup</Button>
                 <Button variant="secondary" onClick={() => document.getElementById("studia-backup-file")?.click()}><Upload className="w-4 h-4" /> Import backup</Button>
                 <input id="studia-backup-file" type="file" accept="application/json,.json" className="sr-only" aria-label="Choose a Studia JSON backup" onChange={(event) => { void importData(event.target.files?.[0]); event.target.value = ""; }} />
               </div>
+        </div>
+        <div className="p-5">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 p-4 rounded-xl bg-danger/5 border border-danger/20">
+            <div>
               <p className="text-sm text-danger font-medium">Reset all data</p>
               <p className="text-xs text-black mt-0.5">
                 This will permanently delete all your data. This cannot be

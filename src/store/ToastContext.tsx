@@ -58,11 +58,11 @@ export function ToastProvider({ children }: { children: ReactNode }) {
                 animate={{ opacity: 1, y: 0, scale: 1 }}
                 exit={{ opacity: 0, x: 100, scale: 0.9 }}
                 transition={{ type: 'spring', stiffness: 400, damping: 30 }}
-                className="glass-strong rounded-xl shadow-float px-4 py-3 flex items-center gap-3 min-w-[260px] max-w-sm pointer-events-auto"
+                className="glass-strong backdrop-blur-sm rounded-xl shadow-float px-4 py-3 flex items-center gap-3 min-w-[260px] max-w-sm pointer-events-auto"
               >
                 <Icon className={`w-5 h-5 shrink-0 ${colors[t.type]}`} />
-                <span className="text-sm text-fg flex-1">{t.message}</span>
-                <button onClick={() => dismiss(t.id)} className="text-fg-subtle hover:text-fg transition-colors">
+                <span className="text-sm text-bg-surface flex-1">{t.message}</span>
+                <button onClick={() => dismiss(t.id)} className="text-bg-surface hover:text-info transition-colors">
                   <X className="w-4 h-4" />
                 </button>
               </motion.div>
