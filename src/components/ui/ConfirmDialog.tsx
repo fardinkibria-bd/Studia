@@ -24,7 +24,25 @@ export function ConfirmDialog({
       onClose={onClose}
       onSave={() => { onConfirm(); onClose(); }}
       title={title}
-      saveLabel={confirmLabel}
+      confirmOnEnter={false}
+      footer={
+        <>
+          <button
+            type="button"
+            onClick={onClose}
+            className="px-4 h-10 rounded-xl border-border-default text-sm font-medium"
+          >
+            Cancel
+          </button>
+          <button
+            type="button"
+            onClick={() => { onConfirm(); onClose(); }}
+            className="px-4 h-10 rounded-xl bg-danger text-white text-sm font-medium"
+          >
+            {confirmLabel}
+          </button>
+        </>
+      }
     >
       <div className="flex gap-3">
         <div className="w-10 h-10 rounded-xl bg-danger/10 text-danger flex items-center justify-center shrink-0">

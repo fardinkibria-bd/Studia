@@ -291,8 +291,10 @@ export default function Revision() {
                                   >
                                     {r.title}
                                   </PlayfulStrike>
-                                  <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity shrink-0">
+                                  <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 focus-within:opacity-100 transition-opacity shrink-0">
                                     <button
+                                      type="button"
+                                      aria-label={`Edit ${r.title}`}
                                       onClick={() => {
                                         setEditing({ ...r });
                                         setModalOpen(true);
@@ -302,6 +304,8 @@ export default function Revision() {
                                       <Pencil className="w-3.5 h-3.5" />
                                     </button>
                                     <button
+                                      type="button"
+                                      aria-label={`Delete ${r.title}`}
                                       onClick={() => deleteRevision(r.id)}
                                       className="p-1.5 rounded-lg hover:bg-danger/10 text-warning hover:text-danger"
                                     >

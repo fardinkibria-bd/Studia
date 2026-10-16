@@ -5,6 +5,8 @@ import {
   Sun,
   Timer,
   RotateCcw,
+  Download,
+  Upload,
   Plus,
   Trash2,
   Pencil,
@@ -12,7 +14,7 @@ import {
   Palette,
   Monitor,
 } from "lucide-react";
-import { useStore, uid } from "@/store/StoreContext";
+import { normalizeAppData, useStore, uid } from "@/store/StoreContext";
 import { useTheme } from "@/store/ThemeContext";
 import { useToast } from "@/store/ToastContext";
 import { Card } from "@/components/ui/Card";
@@ -30,6 +32,33 @@ export default function Settings() {
   const [subjectModal, setSubjectModal] = useState(false);
   const [editingSubject, setEditingSubject] = useState<Subject | null>(null);
   const [resetOpen, setResetOpen] = useState(false);
+
+  const exportData = () => {
+    const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+    const anchor = document.createElement("a");
+    anchor.href = url;
+    anchor.download = `studia-backup-${new Date().toISOString().slice(0, 10)}.json`;
+    anchor.click();
+    URL.revokeObjectURL(url);
+    toast("Backup downloaded", "success");
+  };
+
+  const importData = async (file?: File) => {
+    if (!file) return;
+    try {
+      const parsed: unknown = JSON.parse(await file.text());
+      const normalized = normalizeAppData(parsed);
+      if (!normalized) throw new Error("This file does not look like a Studia backup");
+      if (!window.confirm("Import this backup and replace the data currently in this browser? Download a backup first if you want to keep it.")) return;
+      update((current) => {
+        Object.assign(current, normalized);
+      });
+      toast("Backup imported", "success");
+    } catch (error) {
+      toast(error instanceof Error ? error.message : "Could not import backup", "error");
+    }
+  };
 
   const saveSubject = (s: Subject) => {
     update((d) => {
@@ -107,7 +136,11 @@ export default function Settings() {
               </p>
             </div>
             <button
+              type="button"
               onClick={() => setReducedMotion(!reducedMotion)}
+              role="switch"
+              aria-checked={reducedMotion}
+              aria-label="Reduced motion"
               className={`w-12 h-7 rounded-full transition-colors relative ${reducedMotion ? "bg-brand-500" : "bg-bg-muted"}`}
             >
               <motion.div
@@ -128,11 +161,14 @@ export default function Settings() {
         </div>
         <div className="p-5 grid grid-cols-3 gap-4">
           <div>
-            <label className="text-sm font-medium block mb-2">
+            <label htmlFor="pomodoro-focus" className="text-sm font-medium block mb-2">
               Focus (min)
             </label>
             <Input
+              id="pomodoro-focus"
               type="number"
+              min={1}
+              max={1440}
               value={data.settings.pomodoroFocus}
               onChange={(e) =>
                 updateSettings(
@@ -143,11 +179,14 @@ export default function Settings() {
             />
           </div>
           <div>
-            <label className="text-sm font-medium block mb-2">
+            <label htmlFor="pomodoro-break" className="text-sm font-medium block mb-2">
               Break (min)
             </label>
             <Input
+              id="pomodoro-break"
               type="number"
+              min={1}
+              max={1440}
               value={data.settings.pomodoroBreak}
               onChange={(e) =>
                 updateSettings(
@@ -158,11 +197,14 @@ export default function Settings() {
             />
           </div>
           <div>
-            <label className="text-sm font-medium block mb-2">
+            <label htmlFor="weekly-goal" className="text-sm font-medium block mb-2">
               Weekly goal (h)
             </label>
             <Input
+              id="weekly-goal"
               type="number"
+              min={1}
+              max={1000}
               value={data.settings.weeklyGoalHours}
               onChange={(e) =>
                 updateSettings(
@@ -245,8 +287,10 @@ export default function Settings() {
                       </p>
                     )}
                   </div>
-                  <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                  <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 focus-within:opacity-100 transition-opacity">
                     <button
+                      type="button"
+                      aria-label={`Edit ${s.name}`}
                       onClick={() => {
                         setEditingSubject({ ...s });
                         setSubjectModal(true);
@@ -256,6 +300,8 @@ export default function Settings() {
                       <Pencil className="w-3.5 h-3.5" />
                     </button>
                     <button
+                      type="button"
+                      aria-label={`Delete ${s.name}`}
                       onClick={() => deleteSubject(s.id)}
                       className="p-1.5 rounded-lg hover:bg-danger/10 text-warning hover:text-danger"
                     >
@@ -278,6 +324,11 @@ export default function Settings() {
         <div className="p-5">
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 p-4 rounded-xl bg-danger/5 border border-danger/20">
             <div>
+              <div className="flex flex-wrap gap-2 mb-4">
+                <Button variant="secondary" onClick={exportData}><Download className="w-4 h-4" /> Export backup</Button>
+                <Button variant="secondary" onClick={() => document.getElementById("studia-backup-file")?.click()}><Upload className="w-4 h-4" /> Import backup</Button>
+                <input id="studia-backup-file" type="file" accept="application/json,.json" className="sr-only" aria-label="Choose a Studia JSON backup" onChange={(event) => { void importData(event.target.files?.[0]); event.target.value = ""; }} />
+              </div>
               <p className="text-sm text-danger font-medium">Reset all data</p>
               <p className="text-xs text-black mt-0.5">
                 This will permanently delete all your data. This cannot be

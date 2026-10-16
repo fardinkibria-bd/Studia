@@ -3,7 +3,7 @@ import { X } from "lucide-react";
 import { useTheme } from "@/store/ThemeContext";
 import { Button } from "@/components/ui/Button";
 import type { ReactNode } from "react";
-import { useEffect } from "react";
+import { useEffect, useId, useRef } from "react";
 
 interface ModalProps {
   open: boolean;
@@ -16,6 +16,7 @@ interface ModalProps {
   size?: "sm" | "md" | "lg";
   saveLabel?: string;
   cancelLabel?: string;
+  confirmOnEnter?: boolean;
 }
 
 export function Modal({
@@ -29,14 +30,21 @@ export function Modal({
   size = "md",
   saveLabel = "Save",
   cancelLabel = "Cancel",
+  confirmOnEnter = true,
 }: ModalProps) {
   const { reducedMotion } = useTheme();
+  const titleId = useId();
+  const dialogRef = useRef<HTMLDivElement>(null);
+  const previousFocusRef = useRef<HTMLElement | null>(null);
 
   useEffect(() => {
     if (open) {
+      previousFocusRef.current = document.activeElement as HTMLElement | null;
       document.body.style.overflow = "hidden";
+      requestAnimationFrame(() => dialogRef.current?.focus());
       return () => {
         document.body.style.overflow = "";
+        previousFocusRef.current?.focus();
       };
     }
   }, [open]);
@@ -45,10 +53,34 @@ export function Modal({
   useEffect(() => {
     if (!open) return;
     const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Tab") {
+        const dialog = dialogRef.current;
+        if (!dialog) return;
+        const focusable = Array.from(
+          dialog.querySelectorAll<HTMLElement>(
+            'button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), a[href], [tabindex]:not([tabindex="-1"])',
+          ),
+        ).filter((element) => element.offsetParent !== null);
+        if (focusable.length === 0) {
+          e.preventDefault();
+          dialog.focus();
+          return;
+        }
+        const first = focusable[0];
+        const last = focusable[focusable.length - 1];
+        if (e.shiftKey && (document.activeElement === first || document.activeElement === dialog)) {
+          e.preventDefault();
+          last.focus();
+        } else if (!e.shiftKey && document.activeElement === last) {
+          e.preventDefault();
+          first.focus();
+        }
+        return;
+      }
       if (e.key === "Escape") {
         e.preventDefault();
         onClose();
-      } else if (e.key === "Enter" && onSave) {
+      } else if (e.key === "Enter" && onSave && confirmOnEnter) {
         const target = e.target as HTMLElement;
         // Don't hijack Enter when an interactive control already handles it:
         // textareas insert newlines, buttons/selects activate themselves.
@@ -64,7 +96,7 @@ export function Modal({
     };
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [open, onClose, onSave]);
+  }, [open, onClose, onSave, confirmOnEnter]);
 
   const sizes = { sm: "max-w-md", md: "max-w-lg", lg: "max-w-2xl" };
 
@@ -91,6 +123,11 @@ export function Modal({
             onClick={onClose}
           />
           <motion.div
+            ref={dialogRef}
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby={title ? titleId : undefined}
+            tabIndex={-1}
             initial={
               reducedMotion
                 ? { opacity: 0 }
@@ -109,7 +146,7 @@ export function Modal({
               <div className="p-5 border-b border-bg-muted flex items-start justify-between gap-4">
                 <div>
                   {title && (
-                    <h2 className="text-lg font-semibold text-purple-500">
+                    <h2 id={titleId} className="text-lg font-semibold text-purple-500">
                       {title}
                     </h2>
                   )}
@@ -120,7 +157,9 @@ export function Modal({
                   )}
                 </div>
                 <button
+                  type="button"
                   onClick={onClose}
+                  aria-label="Close dialog"
                   className="text-bg-surface hover:text-green-700 transition-colors shrink-0"
                 >
                   <X className="w-5 h-5" />

@@ -1,5 +1,5 @@
 /* eslint-disable react-refresh/only-export-components */
-import { createContext, useContext, useEffect, useState, useCallback, type ReactNode } from 'react';
+import { createContext, useContext, useEffect, useState, useCallback, useRef, type ReactNode } from 'react';
 import type { AppData } from '@/types';
 import { EMPTY_DATA } from '@/data/seed';
 import { resetStaticRoutines, computeStudyStreak } from '@/lib/utils';
@@ -8,6 +8,10 @@ const STORAGE_KEY = 'studia:data:v2';
 const LEGACY_KEYS = ['studia:data:v1'];
 
 type Updater = (data: AppData) => void;
+
+export function normalizeAppData(raw: unknown): AppData | null {
+  return migrateLegacy(raw);
+}
 
 interface StoreContextValue {
   data: AppData;
@@ -18,32 +22,63 @@ interface StoreContextValue {
 
 const StoreContext = createContext<StoreContextValue | null>(null);
 
+const COLLECTION_KEYS = [
+  'subjects', 'routines', 'homework', 'todos', 'revisions', 'exams',
+  'sessions', 'goals', 'achievements', 'calendarEvents',
+] as const;
+
+/** Drop malformed entries so bad localStorage data can't break page rendering. */
+function validCollection(value: unknown): Record<string, unknown>[] {
+  if (!Array.isArray(value)) return [];
+  return value.filter(
+    (item): item is Record<string, unknown> =>
+      !!item && typeof item === 'object' && !Array.isArray(item),
+  );
+}
+
 function migrateLegacy(raw: unknown): AppData | null {
-  if (!raw || typeof raw !== 'object') return null;
+  if (!raw || typeof raw !== 'object' || Array.isArray(raw)) return null;
   const obj = raw as Record<string, unknown>;
-  const data: AppData = {
-    ...EMPTY_DATA,
-    ...(obj as Partial<AppData>),
-  };
-  // Ensure calendarEvents exists (added in v2)
-  if (!Array.isArray(data.calendarEvents)) data.calendarEvents = [];
-  // Ensure todos exists (added in v3)
-  if (!Array.isArray(data.todos)) data.todos = [];
-  // Ensure all collections are arrays
-  (['subjects', 'routines', 'homework', 'revisions', 'exams', 'sessions', 'goals', 'achievements'] as const).forEach((k) => {
-    if (!Array.isArray(data[k])) data[k] = [];
-  });
-  // Ensure settings object is valid
-  if (!data.settings || typeof data.settings !== 'object') {
-    data.settings = { ...EMPTY_DATA.settings };
-  } else {
-    data.settings = { ...EMPTY_DATA.settings, ...data.settings };
+  const data = { ...EMPTY_DATA } as AppData;
+
+  // Rebuild collections from object entries and validate field types. This is
+  // intentionally defensive: localStorage is untrusted input, not a database.
+  for (const key of COLLECTION_KEYS) {
+    const source = validCollection(obj[key]);
+    (data[key] as unknown[]) = source.filter((item) => {
+      if (typeof item.id !== 'string') return false;
+      for (const field of ['title', 'name', 'description', 'notes', 'location', 'teacher', 'date', 'dueDate', 'scheduledDate', 'time', 'startTime', 'endTime', 'unit', 'category', 'type', 'priority', 'status'] as const) {
+        if (field in item && item[field] !== undefined && item[field] !== null && typeof item[field] !== 'string') return false;
+      }
+      for (const field of ['completed', 'isBreak', 'unlocked', 'isStatic', 'inProgress'] as const) {
+        if (field in item && typeof item[field] !== 'boolean') return false;
+      }
+      for (const field of ['confidence', 'duration', 'marks', 'target', 'current', 'order', 'day'] as const) {
+        if (field in item && item[field] !== undefined && typeof item[field] !== 'number') return false;
+      }
+      return true;
+    }) as never;
   }
-  // The streak is always derived from the actual study sessions (unique local
-  // calendar dates with ≥1 focus session, consecutive ending on the most recent
-  // study date). Recompute on load so any stale persisted streak is healed.
+
+  const settings = obj.settings;
+  if (settings && typeof settings === 'object' && !Array.isArray(settings)) {
+    const candidate = settings as Record<string, unknown>;
+    data.settings = {
+      theme: candidate.theme === 'light' ? 'light' : 'dark',
+      reducedMotion: candidate.reducedMotion === true,
+      weeklyGoalHours: finiteInRange(candidate.weeklyGoalHours, 1, 1000, EMPTY_DATA.settings.weeklyGoalHours),
+      pomodoroFocus: finiteInRange(candidate.pomodoroFocus, 1, 1440, EMPTY_DATA.settings.pomodoroFocus),
+      pomodoroBreak: finiteInRange(candidate.pomodoroBreak, 1, 1440, EMPTY_DATA.settings.pomodoroBreak),
+    };
+  }
   data.streak = computeStudyStreak(data.sessions);
   return data;
+}
+
+function finiteInRange(value: unknown, min: number, max: number, fallback: number): number {
+  return typeof value === 'number' && Number.isFinite(value)
+    ? Math.min(max, Math.max(min, value))
+    : fallback;
 }
 
 function loadData(): AppData {
@@ -96,16 +131,40 @@ export function StoreProvider({ children }: { children: ReactNode }) {
     setLoading(false);
   }, []);
 
-  // Debounced save to avoid excessive writes
+  const externalChangeAt = useRef(0);
+
+  // Listen for changes made by another tab. Cancel stale queued writes and
+  // give the incoming external state a short settling window before saving.
   useEffect(() => {
     if (loading) return;
+    const onStorage = (event: StorageEvent) => {
+      if (event.key !== STORAGE_KEY || !event.newValue) return;
+      try {
+        const parsed = JSON.parse(event.newValue);
+        const migrated = migrateLegacy(parsed);
+        if (migrated) {
+          externalChangeAt.current = Date.now();
+          setData(migrated);
+        }
+      } catch {
+        // Ignore malformed external updates; keep current in-memory data.
+      }
+    };
+    window.addEventListener('storage', onStorage);
+    return () => window.removeEventListener('storage', onStorage);
+  }, [loading]);
+
+  // Debounced save to avoid excessive writes.
+  useEffect(() => {
+    if (loading) return;
+    const delay = Math.max(150, 250 - (Date.now() - externalChangeAt.current));
     const timer = window.setTimeout(() => {
       try {
         localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
       } catch {
         /* ignore quota errors */
       }
-    }, 150);
+    }, delay);
     return () => window.clearTimeout(timer);
   }, [data, loading]);
 

@@ -297,14 +297,18 @@ export default function Schedule() {
                             )}
                           </div>
                         </div>
-                        <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                        <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 focus-within:opacity-100 transition-opacity">
                           <button
+                            type="button"
+                            aria-label={`Edit ${item.title}`}
                             onClick={() => openEdit(item)}
                             className="p-1.5 rounded-lg hover:bg-brand-500/85 text-brand-500/85 hover:text-fg"
                           >
                             <Pencil className="w-3.5 h-3.5" />
                           </button>
                           <button
+                            type="button"
+                            aria-label={`Delete ${item.title}`}
                             onClick={() => deleteRoutine(item.id)}
                             className="p-1.5 rounded-lg hover:bg-danger/10 text-warning hover:text-danger"
                           >
