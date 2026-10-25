@@ -468,15 +468,15 @@ function CycleModal({
             }
             className="w-4 h-4 rounded accent-brand-500"
           />
-          <span className="text-sm text-fg-muted">Enable cycle</span>
+          <span className="text-sm text-bg-surface">Enable cycle</span>
         </label>
-        <p className="text-xs text-fg-subtle -mt-2">
+        <p className="text-xs text-bg-surface -mt-2">
           Set the number of focus sessions below, then toggle this on to start
           cycling.
         </p>
 
         <div>
-          <label className="text-sm font-medium text-fg-muted block mb-2">
+          <label className="text-sm font-medium block mb-2">
             Focus sessions per cycle
           </label>
           <div className="w-32">
@@ -491,17 +491,17 @@ function CycleModal({
             />
           </div>
           {draft.count === 1 && (
-            <p className="text-xs text-fg-subtle mt-1.5">
+            <p className="text-xs text-bg-surface mt-1.5">
               Focus → Break → Stop
             </p>
           )}
           {draft.count === 2 && (
-            <p className="text-xs text-fg-subtle mt-1.5">
+            <p className="text-xs text-bg-surface mt-1.5">
               Focus → Break → Focus → Break → Stop
             </p>
           )}
           {draft.count >= 3 && (
-            <p className="text-xs text-fg-subtle mt-1.5">
+            <p className="text-xs text-bg-surface mt-1.5">
               Repeated Focus → Break until {draft.count} focus sessions are
               done, then stop.
             </p>
@@ -513,7 +513,7 @@ function CycleModal({
           )}
         </div>
 
-        <p className="text-xs text-fg-subtle bg-bg-muted/50 rounded-lg p-3">
+        <p className="text-xs text-fg bg-bg-muted/90 rounded-lg p-3">
           The whole cycle is recorded as one study session containing the total
           completed focus time — keeping your stats, charts, and history
           consistent.

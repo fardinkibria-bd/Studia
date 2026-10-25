@@ -320,11 +320,16 @@ export default function Settings() {
         <div className="p-5 border-b border-border-default flex items-center gap-2">
           <Monitor className="w-4 h-4 text-brand-500" />
           <h3 className="font-titles text-bg-surface">Data Management</h3>
-          <div className="flex flex-wrap gap-5 ml-auto">
-                <Button variant="secondary" onClick={exportData}><Download className="w-4 h-4" /> Export backup</Button>
-                <Button variant="secondary" onClick={() => document.getElementById("studia-backup-file")?.click()}><Upload className="w-4 h-4" /> Import backup</Button>
+          <div className="hidden sm:flex flex-wrap gap-5 ml-auto">
+                <Button variant="secondary" onClick={exportData} className="hover:bg-brand-500 hover:text-white"><Download className="w-4 h-4" /> Export backup</Button>
+                <Button variant="secondary" onClick={() => document.getElementById("studia-backup-file")?.click()} className="hover:bg-brand-500 hover:text-white"><Upload className="w-4 h-4" /> Import backup</Button>
                 <input id="studia-backup-file" type="file" accept="application/json,.json" className="sr-only" aria-label="Choose a Studia JSON backup" onChange={(event) => { void importData(event.target.files?.[0]); event.target.value = ""; }} />
-              </div>
+          </div>
+        </div>
+        <div className="p-2 border-b border-border-default flex sm:hidden items-center gap-5">
+                <Button variant="secondary" onClick={exportData} className="hover:bg-brand-500 hover:text-white"><Download className="w-4 h-4" /> Export backup</Button>
+                <Button variant="secondary" onClick={() => document.getElementById("studia-backup-file")?.click()} className="hover:bg-brand-500 hover:text-white"><Upload className="w-4 h-4" /> Import backup</Button>
+                <input id="studia-backup-file" type="file" accept="application/json,.json" className="sr-only" aria-label="Choose a Studia JSON backup" onChange={(event) => { void importData(event.target.files?.[0]); event.target.value = ""; }} />
         </div>
         <div className="p-5">
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 p-4 rounded-xl bg-danger/5 border border-danger/20">
