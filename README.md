@@ -8,6 +8,8 @@ Instead of forcing students to use separate apps for homework, revision, routine
 
 The goal is simple: **spend less time managing your studies and more time actually studying.**
 
+Studia is installable as a Progressive Web App (PWA). After the first online visit, the app shell and local assets are cached so users can open it offline; their planner data is stored locally in the browser. Ambient sound files are fetched on demand and may need to be played online once before they are available offline. Changes do not sync between devices unless a synchronization service is added.
+
 ---
 
 ## ✨ Features
@@ -16,59 +18,59 @@ The goal is simple: **spend less time managing your studies and more time actual
 
 Get a clear overview of your academic day from a single dashboard.
 
-* Quick overview of study activity
-* Upcoming tasks and deadlines
-* Homework and revision tracking
-* Daily productivity overview
-* Study progress at a glance
-* Centralized access to major features
+- Quick overview of study activity
+- Upcoming tasks and deadlines
+- Homework and revision tracking
+- Daily productivity overview
+- Study progress at a glance
+- Centralized access to major features
 
 ### 📝 Homework Management
 
 Keep academic work organized and avoid missing deadlines.
 
-* Create and manage homework
-* Set deadlines
-* Track completion status
-* Monitor pending and completed work
-* Keep academic tasks organized in one place
+- Create and manage homework
+- Set deadlines
+- Track completion status
+- Monitor pending and completed work
+- Keep academic tasks organized in one place
 
 ### 📚 Revision Management
 
 Make revision easier to plan and track.
 
-* Add revision tasks
-* Organize upcoming revisions
-* Track completed revisions
-* Keep important topics visible
-* Build a consistent revision workflow
+- Add revision tasks
+- Organize upcoming revisions
+- Track completed revisions
+- Keep important topics visible
+- Build a consistent revision workflow
 
 ### ⏱️ Study Sessions
 
 Track the time you spend studying and understand your study habits over time.
 
-* Track study sessions
-* Monitor total study time
-* Review study activity
-* Build consistent study habits
+- Track study sessions
+- Monitor total study time
+- Review study activity
+- Build consistent study habits
 
 ### ✅ To-Do Management
 
 Manage smaller tasks that still matter.
 
-* Create to-do items
-* Track completion
-* Keep daily responsibilities organized
-* Reduce mental clutter
+- Create to-do items
+- Track completion
+- Keep daily responsibilities organized
+- Reduce mental clutter
 
 ### 📅 Routines
 
 Build structure into your everyday academic life.
 
-* Create daily routines
-* Organize recurring activities
-* Maintain consistency
-* Build better study habits
+- Create daily routines
+- Organize recurring activities
+- Maintain consistency
+- Build better study habits
 
 ### 📈 Analytics
 
@@ -76,12 +78,12 @@ Turn study activity into useful insights.
 
 Studia can help students understand their productivity through visual analytics based on activities such as:
 
-* Homework completion
-* Revision completion
-* Study time
-* To-do completion
-* Overall productivity
-* Study progress
+- Homework completion
+- Revision completion
+- Study time
+- To-do completion
+- Overall productivity
+- Study progress
 
 The goal is not simply to show numbers, but to help students understand **how they are actually using their time**.
 
@@ -89,12 +91,12 @@ The goal is not simply to show numbers, but to help students understand **how th
 
 Studia is designed with a clean, modern interface focused on usability.
 
-* Responsive layout
-* Modern dashboard design
-* Clear visual hierarchy
-* Smooth interactions
-* Student-focused experience
-* Desktop and mobile-friendly architecture
+- Responsive layout
+- Modern dashboard design
+- Clear visual hierarchy
+- Smooth interactions
+- Student-focused experience
+- Desktop and mobile-friendly architecture
 
 ---
 
@@ -102,12 +104,12 @@ Studia is designed with a clean, modern interface focused on usability.
 
 Students often manage their academic life across multiple disconnected tools:
 
-* Notes for planning
-* Calendar apps for deadlines
-* Reminder apps for tasks
-* Timers for studying
-* Spreadsheets for tracking progress
-* Separate tools for productivity
+- Notes for planning
+- Calendar apps for deadlines
+- Reminder apps for tasks
+- Timers for studying
+- Spreadsheets for tracking progress
+- Separate tools for productivity
 
 This fragmentation creates unnecessary friction.
 
@@ -187,25 +189,24 @@ Studia is intended to grow beyond a simple study planner into a complete student
 
 ### 🚧 Planned Improvements
 
-* [ ] AI-powered study assistance
-* [ ] Personalized study recommendations
-* [ ] Smarter productivity analytics
-* [ ] Cloud database synchronization
-* [ ] Persistent user authentication
-* [ ] Cross-device synchronization
-* [ ] Advanced notifications and reminders
-* [ ] More detailed academic analytics
-* [ ] Offline support
-* [ ] Improved accessibility
-* [ ] Progressive Web App capabilities
+- [ ] AI-powered study assistance
+- [ ] Personalized study recommendations
+- [ ] Smarter productivity analytics
+- [ ] Cloud database synchronization
+- [ ] Persistent user authentication
+- [ ] Cross-device synchronization
+- [ ] Advanced notifications and reminders
+- [ ] More detailed academic analytics
+- [ ] Cloud synchronization for offline changes
+- [ ] Improved accessibility
 
 ### 📱 Native Applications
 
 Future development is planned to expand Studia beyond the web:
 
-* Android application
-* iOS application
-* Windows application
+- Android application
+- iOS application
+- Windows application
 
 The long-term goal is to allow students to access the same academic data and workflow across their devices.
 
@@ -217,14 +218,14 @@ AI is planned as an enhancement to Studia rather than a replacement for the stud
 
 Potential applications include:
 
-* Generating personalized study plans
-* Recommending what to study next
-* Identifying unfinished or neglected work
-* Summarizing productivity patterns
-* Helping students organize large workloads
-* Providing study assistance
-* Suggesting realistic schedules
-* Turning academic goals into actionable plans
+- Generating personalized study plans
+- Recommending what to study next
+- Identifying unfinished or neglected work
+- Summarizing productivity patterns
+- Helping students organize large workloads
+- Providing study assistance
+- Suggesting realistic schedules
+- Turning academic goals into actionable plans
 
 AI features should remain transparent, useful, and privacy-conscious.
 
@@ -266,12 +267,12 @@ The long-term vision is to create a **student-first productivity ecosystem** tha
 
 Studia is primarily designed for:
 
-* School students
-* High school students
-* College students
-* University students
-* Independent learners
-* Students preparing for exams
+- School students
+- High school students
+- College students
+- University students
+- Independent learners
+- Students preparing for exams
 
 The platform is designed to remain flexible enough to support different academic workflows.
 
@@ -281,14 +282,14 @@ The platform is designed to remain flexible enough to support different academic
 
 Studia was created with several goals in mind:
 
-* Make studying easier to organize
-* Reduce academic clutter
-* Help students stay consistent
-* Make progress measurable
-* Encourage better time management
-* Provide actionable productivity insights
-* Build a scalable foundation for future AI features
-* Create a unified student productivity experience
+- Make studying easier to organize
+- Reduce academic clutter
+- Help students stay consistent
+- Make progress measurable
+- Encourage better time management
+- Provide actionable productivity insights
+- Build a scalable foundation for future AI features
+- Create a unified student productivity experience
 
 ---
 
@@ -314,12 +315,12 @@ Found a bug or have an idea?
 
 Please open a GitHub Issue and include:
 
-* A clear description
-* Steps to reproduce the issue
-* Expected behavior
-* Actual behavior
-* Browser/device information
-* Screenshots or recordings when useful
+- A clear description
+- Steps to reproduce the issue
+- Expected behavior
+- Actual behavior
+- Browser/device information
+- Screenshots or recordings when useful
 
 For feature requests, explain the problem the feature would solve rather than only describing the feature itself.
 
@@ -337,11 +338,11 @@ It is being developed with a long-term focus on usability, scalability, intellig
 
 If you find Studia useful or interesting:
 
-* ⭐ Star the repository
-* 🐛 Report bugs
-* 💡 Suggest improvements
-* 🔀 Contribute to the project
-* 📢 Share it with other students
+- ⭐ Star the repository
+- 🐛 Report bugs
+- 💡 Suggest improvements
+- 🔀 Contribute to the project
+- 📢 Share it with other students
 
 Every bit of feedback helps make the project better.
 
